@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "target": "ES2021",
+    "rootDir": "src",
+    "outDir": "js",
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "module": "ESNext",
+    "lib": ["DOM.Iterable", "DOM"],
+    "allowJs": true
+  }
+}
