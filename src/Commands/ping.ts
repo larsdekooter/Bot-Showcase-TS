@@ -8,7 +8,7 @@ export default new Command({
     return await interaction.reply({
       content: `Pong!\n\`${client.ws.ping}ms\`\n${
         new Date().getTime() - interaction.createdTimestamp
-      }`,
+      }ms`,
     });
   },
 });
