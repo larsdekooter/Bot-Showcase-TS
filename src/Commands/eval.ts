@@ -34,7 +34,7 @@ export default new Command({
 
     const i = await interaction.awaitModalSubmit({
       filter: (i) => i.customId === "evalModal",
-      time: 60000,
+      time: 120000,
     });
 
     await i.deferReply();
