@@ -5,6 +5,7 @@ import {
   TextInputBuilder,
   TextInputStyle,
   EmbedBuilder,
+  codeBlock,
 } from "discord.js";
 import Command from "../Structures/Command.js";
 import { inspect } from "util";
@@ -51,8 +52,8 @@ export default new Command({
           new EmbedBuilder()
             .setColor("#36393e")
             .addFields(
-              { name: "Input", value: `\`\`\`js\n${code}\n\`\`\`` },
-              { name: "Output", value: `\`\`\`js\n${evaled}\n\`\`\`` }
+              { name: "Input", value: codeBlock("js", code) },
+              { name: "Output", value: codeBlock("js", evaled) }
             )
             .setFooter({
               text: `${client.user.username}`,
@@ -66,7 +67,10 @@ export default new Command({
           new EmbedBuilder()
             .setColor("Red")
             .setDescription(
-              `**Input:**\n\`\`\`js\n${code}\n\`\`\`\n**Output:**\n\`\`\`ansi\n\x1b[31;1m${error.message}\n\`\`\``
+              `**Input:**\n${codeBlock("js", code)}\n**Output:**\n${codeBlock(
+                "ansi",
+                `\x1b[31;1m${error.message}`
+              )}`
             ),
         ],
       });

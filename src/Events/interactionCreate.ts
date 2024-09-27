@@ -1,4 +1,5 @@
 import Event from "../Structures/Event.js";
+import { DiscordjsErrorCodes } from "discord.js";
 
 export default new Event("interactionCreate", async (client, interaction) => {
   if (!interaction.isChatInputCommand()) return;
@@ -11,9 +12,17 @@ export default new Event("interactionCreate", async (client, interaction) => {
     await command.run(interaction, client);
   } catch (error) {
     console.error(error);
-    await interaction.reply({
-      content: "There was an error while executing this command!",
-      ephemeral: true,
-    });
+    try {
+      await interaction.reply({
+        content: "There was an error while executing this command!",
+        ephemeral: true,
+      });
+    } catch {
+      if (error.code === DiscordjsErrorCodes.InteractionAlreadyReplied) {
+        await interaction.editReply({
+          content: "There was an error while executing this command!",
+        });
+      }
+    }
   }
 });
