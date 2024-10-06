@@ -62,6 +62,7 @@ export default new Command({
         ],
       });
     } catch (error) {
+      console.error(error);
       await i.editReply({
         embeds: [
           new EmbedBuilder()
