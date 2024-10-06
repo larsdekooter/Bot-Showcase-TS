@@ -10,6 +10,15 @@ import {
 import Command from "../Structures/Command.js";
 import { inspect } from "util";
 
+enum EmbedLimits {
+  Title = 256,
+  Description = 4096,
+  FieldName = 256,
+  FieldValue = 1024,
+  FooterText = 2048,
+  AuthorName = 256,
+}
+
 export default new Command({
   data: new SlashCommandBuilder()
     .setName("eval")
@@ -41,10 +50,14 @@ export default new Command({
     const code = i.fields.getTextInputValue("codeInput");
 
     try {
-      let evaled = await eval(code);
+      let evaled: string = await eval(code);
 
       if (typeof evaled !== "string") {
         evaled = inspect(evaled);
+      }
+
+      if (evaled.length > EmbedLimits.FieldValue) {
+        evaled = evaled.slice(0, EmbedLimits.FieldValue - 3) + "...";
       }
 
       await i.editReply({
