@@ -43,21 +43,21 @@ export default new Command({
 
     const i = await interaction.awaitModalSubmit({
       filter: (i) => i.customId === "evalModal",
-      time: 120000,
+      time: 60000,
     });
 
     await i.deferReply();
     const code = i.fields.getTextInputValue("codeInput");
 
     try {
-      let evaled: string = await eval(code);
+      let evaled: string = await eval(`async function a(){${code};}; a()`);
 
       if (typeof evaled !== "string") {
         evaled = inspect(evaled);
       }
 
       if (evaled.length > EmbedLimits.FieldValue) {
-        evaled = evaled.slice(0, EmbedLimits.FieldValue - 3) + "...";
+        evaled = evaled.substring(0, EmbedLimits.FieldValue - 13) + "...";
       }
 
       await i.editReply({
