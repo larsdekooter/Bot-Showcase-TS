@@ -7,7 +7,9 @@ export default class MyClient extends Client {
   commands: Collection<string, Command>;
   contextMenuCommands: Collection<string, ContextMenuCommand>;
   constructor() {
-    super({ intents: [GatewayIntentBits.Guilds] });
+    super({
+      intents: [GatewayIntentBits.Guilds, GatewayIntentBits.MessageContent],
+    });
     this.commands = new Collection();
     this.contextMenuCommands = new Collection();
   }
