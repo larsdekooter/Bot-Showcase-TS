@@ -26,7 +26,7 @@ export default new Command({
     .setDescription("Evaluate code")
     .setIntegrationTypes([
       ApplicationIntegrationType.UserInstall,
-      ApplicationIntegrationType.UserInstall,
+      ApplicationIntegrationType.GuildInstall,
     ]),
   async run(interaction, client) {
     if (interaction.user.id !== "697045560527552552") return;
