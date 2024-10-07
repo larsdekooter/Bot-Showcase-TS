@@ -6,6 +6,7 @@ import {
   TextInputStyle,
   EmbedBuilder,
   codeBlock,
+  ApplicationIntegrationType,
 } from "discord.js";
 import Command from "../Structures/Command.js";
 import { inspect } from "util";
@@ -22,7 +23,11 @@ enum EmbedLimits {
 export default new Command({
   data: new SlashCommandBuilder()
     .setName("eval")
-    .setDescription("Evaluate code"),
+    .setDescription("Evaluate code")
+    .setIntegrationTypes([
+      ApplicationIntegrationType.UserInstall,
+      ApplicationIntegrationType.UserInstall,
+    ]),
   async run(interaction, client) {
     if (interaction.user.id !== "697045560527552552") return;
 
