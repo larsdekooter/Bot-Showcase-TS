@@ -6,8 +6,30 @@ import {
   ButtonBuilder,
   ButtonComponent,
   DiscordjsErrorCodes,
-  MessageMentions,
 } from "discord.js";
+
+type Actions =
+  | "clear"
+  | "("
+  | ")"
+  | "^"
+  | "7"
+  | "8"
+  | "9"
+  | "/"
+  | "4"
+  | "5"
+  | "6"
+  | "*"
+  | "1"
+  | "2"
+  | "3"
+  | "-"
+  | "0"
+  | "."
+  | "="
+  | "+"
+  | "delmsg";
 
 export default new Event("interactionCreate", async (client, interaction) => {
   if (interaction.isChatInputCommand()) {
@@ -178,6 +200,47 @@ export default new Event("interactionCreate", async (client, interaction) => {
           return await interaction.channel.setLocked();
         }
         await interaction.update({ components: rows });
+      } else if (customId.startsWith("calc-")) {
+        const action = customId.substring("calc-".length) as Actions;
+        if (action === "delmsg") {
+          await interaction.update({ content: "\u200b", components: [] });
+          await interaction.deleteReply().catch(console.error);
+        } else if (action === "clear") {
+          await interaction.update({
+            content: "",
+            components: interaction.message.components,
+          });
+        } else if (action === "=") {
+          const { content: expression } = interaction.message;
+          try {
+            const result = eval(
+              expression.replace(" ", "").replace("(", " * (")
+            ).toString();
+            await interaction.update({
+              content: result,
+            });
+          } catch (error) {
+            if (error instanceof SyntaxError) {
+              await interaction.reply({
+                content: "Invalid syntax!",
+                ephemeral: true,
+              });
+            } else console.error(error);
+          }
+        } else if (
+          ["/", "+", "-", "*"].includes(action) ||
+          ["/", "+", "-", "*"].includes(
+            interaction.message.content[interaction.message.content.length - 1]
+          )
+        ) {
+          await interaction.update({
+            content: `${interaction.message.content} ${action}`,
+          });
+        } else {
+          await interaction.update({
+            content: `${interaction.message.content}${action}`,
+          });
+        }
       }
     }
   }
