@@ -5,9 +5,9 @@ import {
   EmbedBuilder,
   GuildMember,
   SlashCommandBuilder,
+  time,
 } from "discord.js";
 import Command from "../Structures/Command.js";
-import { timestamp } from "../util.js";
 
 export default new Command({
   data: new SlashCommandBuilder()
@@ -39,7 +39,7 @@ export default new Command({
         },
         {
           name: "Joined server at",
-          value: timestamp(new Date(member.joinedAt), "f"),
+          value: time(new Date(member.joinedAt), "f"),
           inline: true,
         },
         {

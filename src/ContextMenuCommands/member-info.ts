@@ -1,7 +1,10 @@
-import { ApplicationCommandType, ContextMenuCommandBuilder } from "discord.js";
+import {
+  ApplicationCommandType,
+  ContextMenuCommandBuilder,
+  time,
+} from "discord.js";
 import ContextMenuCommand from "../Structures/ContextMenuCommand.js";
 import { EmbedBuilder } from "@discordjs/builders";
-import { timestamp } from "../util.js";
 
 export default new ContextMenuCommand({
   data: new ContextMenuCommandBuilder()
@@ -30,7 +33,7 @@ export default new ContextMenuCommand({
         },
         {
           name: "Joined server at",
-          value: timestamp(new Date(member.joinedAt), "f"),
+          value: time(new Date(member.joinedAt), "f"),
           inline: true,
         },
         {

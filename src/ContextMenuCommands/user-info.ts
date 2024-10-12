@@ -2,9 +2,9 @@ import {
   ApplicationCommandType,
   ContextMenuCommandBuilder,
   EmbedBuilder,
+  time,
 } from "discord.js";
 import ContextMenuCommand from "../Structures/ContextMenuCommand.js";
-import { timestamp } from "../util.js";
 
 export default new ContextMenuCommand({
   data: new ContextMenuCommandBuilder()
@@ -31,7 +31,7 @@ export default new ContextMenuCommand({
         },
         {
           name: "Joined Discord",
-          value: `${timestamp(new Date(user.createdTimestamp), "f")}`,
+          value: `${time(new Date(user.createdTimestamp), "f")}`,
           inline: true,
         },
         {
