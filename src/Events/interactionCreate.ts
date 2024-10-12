@@ -8,7 +8,7 @@ import {
   DiscordjsErrorCodes,
 } from "discord.js";
 
-type Actions =
+type CalculatorActions =
   | "clear"
   | "("
   | ")"
@@ -201,7 +201,7 @@ export default new Event("interactionCreate", async (client, interaction) => {
         }
         await interaction.update({ components: rows });
       } else if (customId.startsWith("calc-")) {
-        const action = customId.substring("calc-".length) as Actions;
+        const action = customId.substring("calc-".length) as CalculatorActions;
         if (action === "delmsg") {
           await interaction.update({ content: "\u200b", components: [] });
           await interaction.deleteReply().catch(console.error);
