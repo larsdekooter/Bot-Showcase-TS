@@ -2,6 +2,7 @@ import {
   ApplicationCommandType,
   ContextMenuCommandBuilder,
   time,
+  TimestampStyles,
 } from "discord.js";
 import ContextMenuCommand from "../Structures/ContextMenuCommand.js";
 import { EmbedBuilder } from "@discordjs/builders";
@@ -33,7 +34,7 @@ export default new ContextMenuCommand({
         },
         {
           name: "Joined server at",
-          value: time(new Date(member.joinedAt), "f"),
+          value: time(new Date(member.joinedAt), TimestampStyles.ShortDateTime),
           inline: true,
         },
         {

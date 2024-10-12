@@ -6,6 +6,7 @@ import {
   GuildMember,
   SlashCommandBuilder,
   time,
+  TimestampStyles,
 } from "discord.js";
 import Command from "../Structures/Command.js";
 
@@ -39,7 +40,7 @@ export default new Command({
         },
         {
           name: "Joined server at",
-          value: time(new Date(member.joinedAt), "f"),
+          value: time(new Date(member.joinedAt), TimestampStyles.ShortDateTime),
           inline: true,
         },
         {

@@ -1,5 +1,10 @@
 import Command from "../Structures/Command.js";
-import { SlashCommandBuilder, time, EmbedBuilder } from "discord.js";
+import {
+  SlashCommandBuilder,
+  time,
+  EmbedBuilder,
+  TimestampStyles,
+} from "discord.js";
 
 export default new Command({
   data: new SlashCommandBuilder()
@@ -31,7 +36,10 @@ export default new Command({
         },
         {
           name: "Joined Discord",
-          value: `${time(new Date(user.createdTimestamp), "f")}`,
+          value: `${time(
+            new Date(user.createdTimestamp),
+            TimestampStyles.ShortDateTime
+          )}`,
           inline: true,
         },
         {
