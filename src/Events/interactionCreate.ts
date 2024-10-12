@@ -6,30 +6,11 @@ import {
   ButtonBuilder,
   ButtonComponent,
   DiscordjsErrorCodes,
+  EmbedBuilder,
+  codeBlock,
 } from "discord.js";
-
-type CalculatorActions =
-  | "clear"
-  | "("
-  | ")"
-  | "^"
-  | "7"
-  | "8"
-  | "9"
-  | "/"
-  | "4"
-  | "5"
-  | "6"
-  | "*"
-  | "1"
-  | "2"
-  | "3"
-  | "-"
-  | "0"
-  | "."
-  | "="
-  | "+"
-  | "delmsg";
+import { CalculatorActions, EmbedLimits } from "../types.js";
+import { inspect } from "util";
 
 export default new Event("interactionCreate", async (client, interaction) => {
   if (interaction.isChatInputCommand()) {
@@ -241,6 +222,61 @@ export default new Event("interactionCreate", async (client, interaction) => {
             content: `${interaction.message.content}${action}`,
           });
         }
+      }
+    }
+  } else if (interaction.isModalSubmit()) {
+    if (interaction.customId === "evalModal") {
+      const i = interaction;
+      await i.deferReply();
+      const code = i.fields.getTextInputValue("codeInput");
+
+      try {
+        let evaled: string | any;
+        if (code.includes("return")) {
+          evaled = await eval(`async function a(){${code};}; a()`);
+        } else {
+          evaled = await eval(`async function a(){return ${code};}; a()`);
+        }
+        if (typeof evaled !== "string") {
+          evaled = inspect(evaled);
+        }
+
+        if (evaled.length > EmbedLimits.FieldValue) {
+          evaled =
+            evaled.substring(
+              0,
+              EmbedLimits.FieldValue - "```js\\n```...".length
+            ) + "...";
+        }
+
+        await i.editReply({
+          embeds: [
+            new EmbedBuilder()
+              .setColor("#36393e")
+              .addFields(
+                { name: "Input", value: codeBlock("js", code) },
+                { name: "Output", value: codeBlock("js", evaled) }
+              )
+              .setFooter({
+                text: `${client.user.username}`,
+                iconURL: client.user.displayAvatarURL(),
+              }),
+          ],
+        });
+      } catch (error) {
+        console.error(error);
+        await i.editReply({
+          embeds: [
+            new EmbedBuilder()
+              .setColor("Red")
+              .setDescription(
+                `**Input:**\n${codeBlock("js", code)}\n**Output:**\n${codeBlock(
+                  "ansi",
+                  `\x1b[31;1m${error.message}`
+                )}`
+              ),
+          ],
+        });
       }
     }
   }
