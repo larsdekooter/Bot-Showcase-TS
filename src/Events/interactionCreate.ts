@@ -224,14 +224,21 @@ export default new Event("interactionCreate", async (client, interaction) => {
         }
       } else if (customId === "fetchTest") {
         await interaction.deferReply();
-        const response = await (await fetch("http://localhost:3000")).json();
-        await interaction.editReply({
-          embeds: [
-            new EmbedBuilder()
-              .setTitle("Fetch Test")
-              .setDescription(codeBlock("json", inspect(response))),
-          ],
-        });
+        try {
+          const response = await fetch("http://localhost:3000");
+          await interaction.editReply({
+            embeds: [
+              new EmbedBuilder()
+                .setTitle("Fetch Test")
+                .setDescription(codeBlock("json", inspect(response))),
+            ],
+          });
+        } catch (e) {
+          console.error(e);
+          return await interaction.editReply({
+            content: "something went wrong",
+          });
+        }
       }
     }
   } else if (interaction.isModalSubmit()) {
