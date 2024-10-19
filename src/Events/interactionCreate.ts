@@ -222,6 +222,16 @@ export default new Event("interactionCreate", async (client, interaction) => {
             content: `${interaction.message.content}${action}`,
           });
         }
+      } else if (customId === "fetchTest") {
+        await interaction.deferReply();
+        const response = await (await fetch("http://localhost:3000")).json();
+        await interaction.editReply({
+          embeds: [
+            new EmbedBuilder()
+              .setTitle("Fetch Test")
+              .setDescription(codeBlock("json", inspect(response))),
+          ],
+        });
       }
     }
   } else if (interaction.isModalSubmit()) {
