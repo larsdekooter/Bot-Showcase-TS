@@ -222,23 +222,6 @@ export default new Event("interactionCreate", async (client, interaction) => {
             content: `${interaction.message.content}${action}`,
           });
         }
-      } else if (customId === "fetchTest") {
-        await interaction.deferReply();
-        try {
-          const response = await fetch("http://localhost:3000");
-          await interaction.editReply({
-            embeds: [
-              new EmbedBuilder()
-                .setTitle("Fetch Test")
-                .setDescription(codeBlock("json", inspect(response))),
-            ],
-          });
-        } catch (e) {
-          console.error(e);
-          return await interaction.editReply({
-            content: "something went wrong",
-          });
-        }
       }
     }
   } else if (interaction.isModalSubmit()) {
